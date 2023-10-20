@@ -2,24 +2,28 @@ import streamlit as st
 import json
 import pandas as pd
 
-# load the base models and configurations from the JSON file
-@st.cache_data 
+@st.cache_data
 def load_base_models():
-    with open("base_models_with_gpus.json", "r") as f:
+    with open("models.json", "r") as f:
         return json.load(f)
 
-# load the GPU data from the cloud-gpus.csv
-@st.cache_data 
+@st.cache_data
+def load_gpus():
+    with open("gpus.json", "r") as f:
+        return json.load(f)
+
+# Existing function to load GPU providers from CSV remains the same
+@st.cache_data
 def load_gpu_providers():
     return pd.read_csv('cloud-gpus.csv')
-
 
 def main():
     st.title("Token Tally: LLM Cost Estimator")
     st.subheader("Estimate Your LLM's Token Toll Across Various Platforms and Configurations")
     
-    # base model and configurations data
-    base_models = load_base_models()["models"]
+    # Base model and configurations data
+    base_models = load_base_models()
+    gpu_data = load_gpus()
     gpu_providers_df = load_gpu_providers()
 
     model_names = [model["name"] for model in base_models]

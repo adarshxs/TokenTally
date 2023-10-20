@@ -1,0 +1,49 @@
+[
+    {
+        "name": "LLAMA 2",
+        "params": [
+            "7B",
+            "13B",
+            "70B"
+        ],
+        "configurations": [
+            {
+                "name": "No Quantization",
+                "min_gpu_memory": "To be calculated"
+            },
+            {
+                "name": "INT8 Quantization",
+                "min_gpu_memory": "To be calculated"
+            }
+        ]
+    },
+    {
+        "name": "BERT",
+        "params": [
+            "340M",
+            "110M"
+        ],
+        "configurations": [
+            {
+                "name": "No Quantization",
+                "min_gpu_memory": "To be calculated"
+            },
+            {
+                "name": "INT8 Quantization",
+                "min_gpu_memory": "To be calculated"
+            }
+        ]
+    },
+    {
+        "name": "Transformer-XL",
+        "params": [
+            "257M"
+        ],
+        "configurations": [
+            {
+                "name": "No Quantization",
+                "min_gpu_memory": "To be calculated"
+            }
+        ]
+    }
+]
