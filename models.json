@@ -1,49 +1,31 @@
 [
     {
         "name": "LLAMA 2",
-        "params": [
-            "7B",
-            "13B",
-            "70B"
-        ],
-        "configurations": [
-            {
-                "name": "No Quantization",
-                "min_gpu_memory": "To be calculated"
-            },
-            {
-                "name": "INT8 Quantization",
-                "min_gpu_memory": "To be calculated"
-            }
-        ]
+        "params": {
+            "7B": 13.5,
+            "13B": 26,
+            "70B": 137.6
+        }
     },
     {
-        "name": "BERT",
-        "params": [
-            "340M",
-            "110M"
-        ],
-        "configurations": [
-            {
-                "name": "No Quantization",
-                "min_gpu_memory": "To be calculated"
-            },
-            {
-                "name": "INT8 Quantization",
-                "min_gpu_memory": "To be calculated"
-            }
-        ]
+        "name": "FALCON", 
+        "params": {
+            "7B": 14.43,
+            "40B": 83.65,
+            "180B": 369.06
+        }
     },
     {
-        "name": "Transformer-XL",
-        "params": [
-            "257M"
-        ],
-        "configurations": [
-            {
-                "name": "No Quantization",
-                "min_gpu_memory": "To be calculated"
-            }
-        ]
+        "name": "Mistral",
+        "params": {
+            "7B": 15
+        }
+    },
+    {
+        "name": "Vicuna",
+        "params": {
+            "7B": 13.45,
+            "13B": 26.03
+        }
     }
 ]

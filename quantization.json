@@ -1,0 +1,8 @@
+{
+    "torch.float16": 1,
+    "torch.bfloat16": 1,
+    "torch.float32": 2,
+    "8bit": 0.25,
+    "4bit": 0.125,
+    "GPTQ": 0.25
+}
