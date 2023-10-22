@@ -7,7 +7,19 @@
 
 ---
 ## Formula
-The current formula to calculate the minimum size for inference and training is from the findings in [Reducing Activation Recomputation in Large Transformer Models](https://arxiv.org/abs/2205.05198) and summarized by [Transformer Math 101](https://blog.eleuther.ai/transformer-math/)
+The current formula to calculate the minimum size for inference and training is from the findings in [Reducing Activation Recomputation in Large Transformer Models](https://arxiv.org/abs/2205.05198) and simplified by [Transformer Math 101](https://blog.eleuther.ai/transformer-math/)
+
+### Minimum GPU Memort Requirement for Inference:
+```
+Model_size * 1.2 
+(according to the blog, where 20% is a good buffer to accomodate for any overheads
+```
+### Minimum GPU Memort Requirement for Inference:
+```
+Total_Memory_Train = Model_Memory + Optimiser_Memory + Activation_Memory + Gradient_Memory
+
+Yet to be implemented according to the blog!
+```
 
 ### Variables:
 - `BatchSz`: Batch size
@@ -31,7 +43,7 @@ The current formula to calculate the minimum size for inference and training is 
 
 ---
 ## Contributions!
-Would love for some feedback, suggestions and contributions😼
+Looking For Contributions to implement the logic and Crowdsource some data!
 
 ---
 
