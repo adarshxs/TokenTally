@@ -26,10 +26,12 @@ def main():
     st.title("Token Tally: LLM Cost Estimator")
     st.subheader("Estimate Your LLM's Token Toll Across Various Platforms and Configurations")
 
-    st.sidebar.image("cutie.png", use_column_width=True)
-    st.sidebar.title("About Token Tally")
-    st.sidebar.write("Select your desired base model, parameters, and configuration to get an estimate of the required GPU memory and model size.")
-    
+    with st.sidebar:
+        st.image("cutie.png", use_column_width=True)
+        st.title("About Token Tally")
+        st.info("Select your desired base model, parameters, and configuration to get an estimate of the required GPU memory and model size. Do contribute: https://github.com/adarshxs/TokenTally")
+        st.warning("Notice: The logic for the final cost/token is yet to be implemented!")
+
     # Base model and configurations data
     base_models = load_base_models()
     quantization_data = load_quantization()
