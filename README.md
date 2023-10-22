@@ -79,4 +79,5 @@ Looking For Contributions to implement the logic and Crowdsource relevant data!
 ---
 
 
-All props to https://github.com/cloud-gpus/cloud-gpus.github.io from where I stole the list of available GPUs and their pricing ;) and to [Dr. Pratik Desai](https://x.com/chheplo?s=20) for the idea!
+All props to https://github.com/cloud-gpus/cloud-gpus.github.io from where I stole the list of available GPUs and their pricing, https://huggingface.co/spaces/mithril-security/TCO_calculator from where I used the TCO logic and https://gist.github.com/Quentin-Anthony/f43939791a7ceb0b01a4937308317be5 for Transformer memory logic as is ;) 
+And to [Dr. Pratik Desai](https://x.com/chheplo?s=20) for the idea!
