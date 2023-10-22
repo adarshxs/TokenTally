@@ -21,6 +21,7 @@ def load_gpus():
 def load_gpu_providers():
     return pd.read_csv('cloud-gpus.csv')
 
+
 def main():
     st.title("Token Tally: LLM Cost Estimator")
     st.subheader("Estimate Your LLM's Token Toll Across Various Platforms and Configurations")
@@ -52,10 +53,22 @@ def main():
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("Model Size")
-        st.write(f"{model_size} GB")
+        st.markdown(f"""
+            <div class="card">
+                <strong>Model Size: {model_size} GB</strong>
+            </div>
+            """, unsafe_allow_html=True)
     with col2:
-        st.subheader("Minimum GPU Memory Requirement")
-        st.write(f"{model_size * 1.2:.2f} GB")
+        st.subheader("Minimum GPU Memory")
+        st.markdown(f"""
+            <div class="card">
+                <strong>Min GPU Memory Required: {model_size * 1.2:.2f} GB</strong>
+            </div>
+            """, unsafe_allow_html=True)
+        st.latex(r'''
+                 \text{GPU Requirement} = 1.2 \times \text{Model Size}
+        ''')
+
         
     cloud_providers = gpu_providers_df["Cloud"].unique()
     selected_provider = st.selectbox("Step 4: Select the Cloud Provider", cloud_providers)
@@ -67,10 +80,37 @@ def main():
 
     # GPU details in a table format
     st.subheader("Available GPU Variants")
-    st.table(selected_gpu_details.assign(hack='').set_index('hack'))
-    
+    selected_gpu_details = selected_gpu_details.reset_index(drop=True)
+    selected_gpu_details.index = selected_gpu_details.index + 1
+    st.table(selected_gpu_details)
+
     st.subheader("Final Total Cost of Ownership")
-    st.write("(To be calculated)")
+    MO = st.slider("Enter Maxed Out percentage", min_value=1, max_value=100, value=50)
+    VMc = st.number_input("Refer to the above table($ On-Demand) and Enter Instance Cost Per Hour (in USD):", min_value=0.0, value=0.0, step=0.01)
+    # calculate TS_max
+    TS_max = 1 # to be implemented!!!
+    TS = TS_max*(MO/100)
+    # Compute Cost
+    CT = VMc / (TS*3600) 
+    st.latex(r'''TS = \frac{TS_{max} \times MO}{100}''')
+    st.latex(r'''CT = \frac{VM_c}{TS}''')
+    
+    st.markdown("""
+    <style>
+    .card {
+        background-color: #f0f2f6; 
+        border-radius: 5px;
+        padding: 20px 30px;
+        margin: 25px 0px;
+        text-align: center;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    st.markdown(f"""
+    <div class="card">
+        <strong>Estimated Cost per Token (CT): To be Implemented</strong>
+    </div>
+    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
