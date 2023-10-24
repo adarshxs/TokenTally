@@ -14,21 +14,47 @@ The current formula to calculate the minimum size for inference and training is 
 Model_size * 1.2 
 # according to the blog, where 20% is a good buffer to accomodate for any overheads
 ```
-### TCO - Total Cost of Ownership:
-To provide a rough estimate of the total cost of self hosting LLMs, the following logic is implemented:
-```shell
-CT = Cost per Token (Input or output), 
-VMc = VM Cost per second, 
-TS = Tokens per second (Input or output), 
-TS_max = Tokens per second when the GPU is maxed out at 100%,
-MO = Maxed Out
-```
-```math
-\begin{align*}
-TS &= \frac{TS_{\text{max}} \times MO}{100} \\
-CT &= \frac{VM_c}{TS}
-\end{align*}
-```
+### Cost per 1,000 tokens - For Selected Model
+To provide a rough estimate of the total cost of running an LLM on per 1000 token basis, 
+### Cost per 1,000 tokens - For Selected Model
+To provide a rough estimate of the total cost of running an LLM on a per 1000 token basis, the logic below is followed in the calculator:
+
+1. **Retrieve User Inputs:** 
+   - The following parameters are required:
+     - FLOPs per Token
+     - FLOPs per GPU (TFLOPs)
+     - Number of GPUs
+     - Cost per Hour (USD)
+     - Memory Bandwidth per GPU (TB/s)
+
+2. **Compute Tokens per Second (Compute Bound):**
+   - The number of tokens processed per second when compute bound is calculated using the formula:
+     ```python
+     tokens_p_sec_compute = (flops_per_gpu * num_gpus * 10**12) / (flops_per_token * 10**9)
+     ```
+
+3. **Compute Tokens per Second (Memory Bound):**
+   - The number of tokens processed per second when memory bound is calculated using the formula:
+     ```python
+     tokens_p_sec_memory = (memory_bandwidth_per_gpu * num_gpus * 10**12) / (flops_per_token * 10**9)
+     ```
+
+4. **Calculate Cost per Token:**
+   - The cost per token for both compute and memory bounds is determined using the formula:
+     ```python
+     cost_p_token_compute = cost_per_hour / (3600 * tokens_p_sec_compute)
+     cost_p_token_memory = cost_per_hour / (3600 * tokens_p_sec_memory)
+     ```
+
+5. **Calculate Cost per 1,000 Tokens:**
+   - The cost per 1,000 tokens for both compute and memory bounds is determined using the formula:
+     ```python
+     cost_p_1k_tokens_compute = cost_p_token_compute * 1000
+     cost_p_1k_tokens_memory = cost_p_token_memory * 1000
+     ```
+
+Upon inputting the necessary parameters and clicking on the "Calculate" button, the calculator will display the estimated cost per 1,000 input tokens and cost per 1,000 output tokens based on the above logic.
+
 
 ---
 
