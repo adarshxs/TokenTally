@@ -15,7 +15,7 @@ Model_size * 1.2
 # according to the blog, where 20% is a good buffer to accomodate for any overheads
 ```
 ### Cost per 1,000 tokens - For Selected Model
-To provide a rough estimate of the total cost of running an LLM on a per 1000 token basis, the logic below is followed in the calculator:
+To provide a rough estimate of the total cost of running an LLM on a per 1000 token basis, the logic from https://cursor.sh/blog/llama-inference is followed in the calculator:
 
 1. **Retrieve User Inputs:** 
    - The following parameters are required:
