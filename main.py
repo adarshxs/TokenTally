@@ -32,6 +32,27 @@ def convert_params(params):
     s = round(params / p, 2)
     return "%s %s" % (s, size_name[i])
 
+def compute_bound_tokens_p_sec(flops_per_token, flops_per_gpu, num_gpus):
+    return (flops_per_gpu * num_gpus * 10**12) / (flops_per_token * 10**9)
+
+def memory_bound_tokens_p_sec(memory_bandwidth_per_gpu, flops_per_token, num_gpus):
+    return (memory_bandwidth_per_gpu * num_gpus * 10**12) / (flops_per_token * 10**9)
+
+def cost_per_1k_tokens(flops_per_token, flops_per_gpu, num_gpus, cost_per_hour, memory_bandwidth_per_gpu):
+    tokens_p_sec_compute = compute_bound_tokens_p_sec(flops_per_token, flops_per_gpu, num_gpus)
+    tokens_p_sec_memory = memory_bound_tokens_p_sec(memory_bandwidth_per_gpu, flops_per_token, num_gpus)
+    
+    cost_p_sec = cost_per_hour / 3600  # cost per second
+    
+    cost_p_token_compute = cost_p_sec / tokens_p_sec_compute
+    cost_p_token_memory = cost_p_sec / tokens_p_sec_memory
+    
+    cost_p_1k_tokens_compute = cost_p_token_compute * 1000
+    cost_p_1k_tokens_memory = cost_p_token_memory * 1000
+    
+    return cost_p_1k_tokens_compute, cost_p_1k_tokens_memory
+
+
 # calculates the total memory necessary for training a model
 def calc_mem(args):
     dp_degree = args.num_gpus / (args.tensor_parallel_size * args.pipeline_parallel_size)
@@ -123,6 +144,7 @@ def main():
     gpu_data = load_gpus()
     gpu_providers_df = load_gpu_providers()
 
+
     model_names = [model["name"] for model in base_models]
     selected_model_name = st.selectbox("Step 1: Select the Base Model", model_names)
     selected_model = next(model for model in base_models if model["name"] == selected_model_name)
@@ -160,9 +182,8 @@ def main():
     cloud_providers = gpu_providers_df["Cloud"].unique()
     selected_provider = st.selectbox("Step 4: Select the Cloud Provider", cloud_providers)
 
-    suitable_gpu_types = gpu_providers_df[gpu_providers_df["Cloud"] == selected_provider]["GPU Type"]
+    suitable_gpu_types = gpu_providers_df[gpu_providers_df["Cloud"] == selected_provider]["GPU Type"].unique()
     selected_gpu_type = st.selectbox("Step 5: Select the GPU Type", suitable_gpu_types)
-
     selected_gpu_details = gpu_providers_df[(gpu_providers_df["Cloud"] == selected_provider) & (gpu_providers_df["GPU Type"] == selected_gpu_type)]
 
     # GPU details in a table format
@@ -171,17 +192,13 @@ def main():
     selected_gpu_details.index = selected_gpu_details.index + 1
     st.table(selected_gpu_details)
 
-    st.subheader("Final Total Cost of Ownership")
-    MO = st.slider("Enter Maxed Out percentage", min_value=1, max_value=100, value=50)
-    VMc = st.number_input("Refer to the above table($ On-Demand) and Enter Instance Cost Per Hour (in USD):", min_value=0.0, value=0.0, step=0.01)
+    st.subheader("Cost per 1,000 tokens - For Selected Model")
     # calculate TS_max
     TS_max = 1 # to be implemented!!!
-    TS = TS_max*(MO/100)
+    #TS = TS_max*(MO/100)
     # Compute Cost
-    CT = VMc / (TS*3600) 
-    st.latex(r'''TS = \frac{TS_{max} \times MO}{100}''')
-    st.latex(r'''CT = \frac{VM_c}{TS}''')
-    
+    #CT = VMc / (TS*3600) 
+
     st.markdown("""
     <style>
     .card {
@@ -193,9 +210,29 @@ def main():
     }
     </style>
     """, unsafe_allow_html=True)
+    cost_p_1k_tokens_compute, cost_p_1k_tokens_memory = 0,0
+
+    calculated_flops = selected_model["params"][selected_params]
+    # Populate the placeholder with the number_input, setting the default value to calculated_flops
+    flops_per_token = st.number_input("FLOPs per Token = Model parameters in Billion * 2 (Considering batch size=1 and ignoring KV cache)", min_value=1.0, value=calculated_flops)
+    flops_per_gpu = st.number_input("FLOPs per GPU (TFLOPs) - Only available for A100 80GB considering 70% MFU", min_value=1, value=200)
+    num_gpus = st.number_input("Number of GPUs", min_value=1, value=2)
+    cost_per_hour = st.number_input("Cost per Hour (USD) - Refer ($)On-Demand in the above table only for A100 80GB", min_value=0.01, value=4.42)
+    memory_bandwidth_per_gpu = st.number_input("Memory Bandwidth per GPU (TB/s) - 2Tb/s for A100 80Gb and considering 60-70 % inference workloads", min_value=0.1, value=1.3)
+
+    if st.button("Calculate"):
+        cost_p_1k_tokens_compute, cost_p_1k_tokens_memory = cost_per_1k_tokens(
+            flops_per_token, 
+            flops_per_gpu, 
+            num_gpus, 
+            cost_per_hour, 
+            memory_bandwidth_per_gpu
+        )
+        
     st.markdown(f"""
     <div class="card">
-        <strong>Estimated Cost per Token (CT): To be Implemented</strong>
+        <strong>Estimated Cost per 1,000 Input tokens: ${cost_p_1k_tokens_compute:.6f}</strong><br>
+        <strong>Estimated Cost per 1,000 Output tokens: ${cost_p_1k_tokens_memory:.6f}</strong>
     </div>
     """, unsafe_allow_html=True)
 
@@ -248,3 +285,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
