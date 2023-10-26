@@ -5,6 +5,8 @@
 
 🎯The goal is to be able to calculate the **minimum GPU requirements** for **Training**(Fine Tuning and Continued Pre Training) and **Inference** for any LLM along with Comparison to Self-Host these models across different GPU Cloud Platforms and Optimizations. Eventually to Calculate tokens/$ for every possible combinations of Model, Platform and Optimizations!
 
+Note: I do realize there's always gonna be proprietary/funky techniques to boil down inference/training costs at production. This aims to be a naive attempt at **estimating** the cost ;)
+
 ---
 ## Inference Calculations:
 The current formula to calculate the minimum size for inference and training is from the findings in [Reducing Activation Recomputation in Large Transformer Models](https://arxiv.org/abs/2205.05198) and simplified by [Transformer Math 101](https://blog.eleuther.ai/transformer-math/)
