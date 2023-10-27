@@ -202,11 +202,12 @@ def main():
     st.markdown("""
     <style>
     .card {
-        background-color: #f0f2f6; 
+        background-color: #2f2f2f; 
         border-radius: 5px;
         padding: 20px 30px;
         margin: 25px 0px;
         text-align: center;
+        color: #ffffff;
     }
     </style>
     """, unsafe_allow_html=True)
