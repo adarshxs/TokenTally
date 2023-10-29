@@ -1,6 +1,6 @@
 import streamlit as st
 
-from memory_calculation import calc_mem
+from tools.memory_calculation import calc_mem
 
 def display_transformer_memory_tool():
     st.title("Transformer Memory Calculator")

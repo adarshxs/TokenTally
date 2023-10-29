@@ -1,8 +1,8 @@
 from sidebar import sidebar
 from overview import display_overview
-from llm_cost_calculator import display_llm_cost_tool
-from transformer_memory_calculator import display_transformer_memory_tool
-from llm_recomender import display_llm_recomender_tool
+from tools.llm_cost_calculator import display_llm_cost_tool
+from tools.transformer_memory_calculator import display_transformer_memory_tool
+from tools.llm_recomender import display_llm_recomender_tool
 
 def main():
     
