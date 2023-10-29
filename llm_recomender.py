@@ -46,6 +46,8 @@ def recommend_model(gpu_memory_available):
 
 
 def display_llm_recomender_tool():
+    if 'value' not in st.session_state:
+        st.session_state.value = "8"
     """
     Display the Streamlit interface for the LLM Model Recommendation tool.
     """
