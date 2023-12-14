@@ -77,7 +77,7 @@ def display_llm_cost_tool():
 
     calculated_flops = selected_model["params"][selected_params]
     # Populate the placeholder with the number_input, setting the default value to calculated_flops
-    flops_per_token = st.number_input("FLOPs per Token = Model parameters in Billion * 2 (Considering batch size=1 and ignoring KV cache)", min_value=1.0, value=calculated_flops)
+    flops_per_token = st.number_input("FLOPs per Token = Model parameters in Billion * 2 (Considering batch size=1 and ignoring KV cache)", min_value=1.0, value=float(calculated_flops))
     flops_per_gpu = st.number_input("FLOPs per GPU (TFLOPs) - Only available for A100 80GB considering 70% MFU", min_value=1, value=200)
     num_gpus = st.number_input("Number of GPUs", min_value=1, value=8)
     cost_per_hour = st.number_input("Cost per Hour (USD) - Refer ($)On-Demand in the above table only for A100 80GB", min_value=0.01, value=40.97)
