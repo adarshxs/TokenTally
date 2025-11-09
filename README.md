@@ -117,8 +117,27 @@ To get memory estimates:
 ## Contributions!
 
 Looking For Contributions to implement the logic and Crowdsource relevant data!
-
+ 
 ---
+docs: add LLM inference frameworks section
+Add a table listing popular LLM inference frameworks to help users choose deployment options. Closes #4
+## 🧠 LLM Inference Frameworks
+
+This section highlights some of the most popular and widely used **inference frameworks** for running and optimizing Large Language Models (LLMs). These frameworks help improve **speed**, **efficiency**, and **scalability** when deploying models in production.
+
+| 🏷️ Framework | ⚙️ Description |
+|--------------|----------------|
+| **🦙 vLLM** | High-throughput and memory-efficient inference engine designed for serving large language models efficiently. |
+| **🤗 Text Generation Inference (TGI)** | Hugging Face’s production-grade server optimized for deploying and serving large transformer models. |
+| **⚡ TensorRT-LLM** | NVIDIA’s accelerated inference library for LLMs, delivering low-latency performance on GPUs. |
+| **🚀 DeepSpeed-Inference** | Microsoft’s extension of DeepSpeed focused on optimizing transformer inference for speed and memory. |
+| **🧩 ONNX Runtime** | Cross-platform inference engine supporting models exported in the ONNX format; works across CPU, GPU, and mobile. |
+| **📱 MLC LLM** | Open-source framework from the TVM community for running LLMs efficiently on diverse hardware (CPU, GPU, mobile). |
+| **🧠 OpenVINO** | Intel’s inference toolkit that optimizes and accelerates deep learning model performance on Intel devices. |
+| **🔗 LiteLLM** | Lightweight Python library offering a unified API to interact with multiple LLM providers (OpenAI, Anthropic, etc.). |
+
+> 💡 *Tip:* You can explore these frameworks based on your deployment goals — whether optimizing for GPUs, edge devices, or multi-model environments.
+
 
 All props to https://github.com/cloud-gpus/cloud-gpus.github.io from where I stole the list of available GPUs and their pricing, https://huggingface.co/spaces/mithril-security/TCO_calculator from where I used the TCO logic and https://gist.github.com/Quentin-Anthony/f43939791a7ceb0b01a4937308317be5 for Transformer memory logic as is ;)
 And to [Dr. Pratik Desai](https://x.com/chheplo?s=20) for the idea!
